@@ -5,7 +5,7 @@ import {
 	StyledCeilCloseBtn,
 	StyledCeilGrab,
 	StyledRow,
-} from "./TableRow";
+} from "../Table/TableRow";
 import Image from "next/image";
 import { TypeProduct, TypeProductKeys } from "@/types/Product";
 
