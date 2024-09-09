@@ -14,6 +14,10 @@ const StyledButton = styled.button`
 	&:focus {
 		outline: none;
 	}
+	&:focus,
+	&:hover {
+		background-color: #f1f1f1;
+	}
 	&::before {
 		content: "✕";
 		font-weight: 900;

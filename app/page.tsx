@@ -1,5 +1,6 @@
 "use client";
-import { App } from "@/components/App";
+import { Search } from "@/components/Search";
+import { Table } from "@/modules/Table";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -36,13 +37,27 @@ const StyledPage = styled.div`
 	align-items: center;
 	height: 100vh;
 `;
+const StyledApp = styled.div`
+	background-color: #ffffff;
+	padding: 18px 20px;
+	margin: 0 auto;
+	width: 100%;
+	max-width: 1132px;
+	height: 100%;
+	max-height: 780px;
+	border-radius: 16px;
+	overflow-y: auto;
+`;
 
 export default function Home() {
 	return (
 		<>
 			<GlobalStyle />
 			<StyledPage>
-				<App />
+				<StyledApp>
+					<Search />
+					<Table />
+				</StyledApp>
 			</StyledPage>
 		</>
 	);
