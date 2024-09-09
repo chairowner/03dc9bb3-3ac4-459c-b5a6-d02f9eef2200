@@ -1,14 +1,19 @@
 import { FC, useState } from "react";
 import Image from "next/image";
 import { initData } from "@/helpers/initial-data";
-import { TypeProduct } from "@/types/Product";
+import { TypeProduct, TypeProductKeys } from "@/types/Product";
 import { CloseButton } from "@/UI/CloseButton";
 import { Flex } from "@/UI/Flex";
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import {
+	DragDropContext,
+	Draggable,
+	Droppable,
+	DropResult,
+} from "@hello-pangea/dnd";
 import { ToggleSwitch } from "@/UI/ToggleSwitch";
 import styled from "styled-components";
+import { log } from "console";
 
-// Используем transient props для фильтрации неизвестных пропсов
 const StyledTable = styled.div`
 	width: 100%;
 	display: flex;
@@ -36,14 +41,15 @@ const StyledRowHead = styled(StyledRow)`
 `;
 
 interface IRowBodyProps {
-	$shadow?: boolean;
+	$isDragging?: boolean;
 }
 
 const StyledRowBody = styled(StyledRow)<IRowBodyProps>`
 	background-color: #ffffff;
 	line-height: 16px;
 	transition: box-shadow 130ms ease-in-out;
-	${({ $shadow }) => ($shadow ? "box-shadow: 0px 3px 6px #0000000D;" : "")}
+	${({ $isDragging }) =>
+		$isDragging ? "box-shadow: 0px 3px 6px #0000000D;" : ""}
 `;
 
 const StyledCeil = styled.div`
@@ -53,6 +59,10 @@ const StyledCeil = styled.div`
 	gap: 12px;
 	flex: 1;
 	padding: 10px;
+`;
+
+const StyledCeilHead = styled(StyledCeil)`
+	cursor: pointer;
 `;
 
 const StyledCeilGrab = styled(StyledCeil)`
@@ -65,7 +75,6 @@ const StyledCeilCloseBtn = styled(StyledCeil)`
 	min-width: 62px;
 `;
 
-// Функция для изменения порядка элементов
 const reorder = (list: any, startIndex: any, endIndex: any): TypeProduct[] => {
 	const result: TypeProduct[] = Array.from(list);
 	const [removed] = result.splice(startIndex, 1);
@@ -74,29 +83,46 @@ const reorder = (list: any, startIndex: any, endIndex: any): TypeProduct[] => {
 };
 
 export const Table: FC = () => {
-	// Начальный список элементов
-	const [items, setItems] = useState<TypeProduct[]>(initData);
+	const [products, setProducts] = useState<TypeProduct[]>(initData);
 
-	// Обработчик изменения переключателя
 	const handleVisibilityToggle = (id: string) => {
-		// Обновляем состояние каждого элемента
-		const updatedItems = items.map((item) =>
+		const updatedItems = products.map((item) =>
 			item.id === id ? { ...item, visible: !item.visible } : item
 		);
-		setItems(updatedItems);
+		setProducts(updatedItems);
 	};
 
-	const onDragEnd = (result: any) => {
-		// Если элемент был перетащен вне допустимой зоны, возвращаем его на место
+	const onDragEnd = (result: DropResult) => {
 		if (!result.destination) return;
-
-		// Обновляем список с изменённым порядком
 		const newItems: TypeProduct[] = reorder(
-			items,
+			products,
 			result.source.index,
 			result.destination.index
 		);
-		setItems(newItems);
+		setProducts(newItems);
+	};
+
+	const sortedBy = (key: TypeProductKeys) => {
+		if (!["title", "category", "visible"].includes(key)) {
+			return false;
+		}
+		const sortedProducts = [...products].sort(
+			(a: TypeProduct, b: TypeProduct) => {
+				if (a[key] > b[key]) {
+					return 1;
+				} else if (a[key] < b[key]) {
+					return -1;
+				}
+				return 0;
+			}
+		);
+		console.log("sortedProducts", sortedProducts);
+		setProducts(sortedProducts);
+	};
+
+	const removeProduct = (id: string) => {
+		const updatedItems = products.filter((item) => item.id !== id);
+		setProducts(updatedItems);
 	};
 
 	return (
@@ -104,9 +130,15 @@ export const Table: FC = () => {
 			<StyledTableHead>
 				<StyledRowHead>
 					<StyledCeilGrab />
-					<StyledCeil>Товар</StyledCeil>
-					<StyledCeil>Категория</StyledCeil>
-					<StyledCeil>Видимость</StyledCeil>
+					<StyledCeilHead onClick={() => sortedBy("title")}>
+						Товар
+					</StyledCeilHead>
+					<StyledCeilHead onClick={() => sortedBy("category")}>
+						Категория
+					</StyledCeilHead>
+					<StyledCeilHead onClick={() => sortedBy("visible")}>
+						Видимость
+					</StyledCeilHead>
 					<StyledCeilCloseBtn />
 				</StyledRowHead>
 			</StyledTableHead>
@@ -114,7 +146,7 @@ export const Table: FC = () => {
 				<Droppable droppableId="products">
 					{(provided) => (
 						<StyledTable {...provided.droppableProps} ref={provided.innerRef}>
-							{items.map((product: TypeProduct, index) => (
+							{products.map((product: TypeProduct, index) => (
 								<Draggable
 									key={product.id}
 									draggableId={product.id}
@@ -122,14 +154,18 @@ export const Table: FC = () => {
 								>
 									{(provided, snapshot) => (
 										<StyledRowBody
-											$shadow={snapshot.isDragging}
+											$isDragging={snapshot.isDragging}
 											{...provided.draggableProps}
 											{...provided.dragHandleProps}
 											ref={provided.innerRef}
 										>
 											<StyledCeilGrab>
 												<Image
-													src={"/draggabledots.svg"}
+													src={
+														snapshot.isDragging
+															? "/draggabledots_grab.svg"
+															: "/draggabledots.svg"
+													}
 													alt="draggable dots"
 													width={21}
 													height={28}
@@ -152,7 +188,9 @@ export const Table: FC = () => {
 												/>
 											</StyledCeil>
 											<StyledCeilCloseBtn>
-												<CloseButton />
+												<CloseButton
+													onClick={() => removeProduct(product.id)}
+												/>
 											</StyledCeilCloseBtn>
 										</StyledRowBody>
 									)}

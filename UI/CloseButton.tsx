@@ -20,6 +20,6 @@ const StyledButton = styled.button`
 	}
 `;
 
-export const CloseButton = (): JSX.Element => {
-	return <StyledButton />;
+export const CloseButton = ({ ...props }): JSX.Element => {
+	return <StyledButton {...props} />;
 };

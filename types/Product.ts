@@ -1,4 +1,9 @@
-export type TypeProductCategory = "Футболка" | "Штаны";
+export type TypeProductCategory =
+	| "Футболка"
+	| "Футболка 1"
+	| "Футболка 3"
+	| "Футболка 6"
+	| "Штаны";
 
 export type TypeProduct = {
 	id: string;
@@ -7,3 +12,5 @@ export type TypeProduct = {
 	category: TypeProductCategory;
 	visible: boolean;
 };
+
+export type TypeProductKeys = keyof TypeProduct;
