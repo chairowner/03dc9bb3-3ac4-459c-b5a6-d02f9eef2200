@@ -4,12 +4,12 @@ import styled, { css } from "styled-components";
 const StyledFlex = styled.div`
 	display: flex;
 	flex-direction: ${(props: any) => props.direction || "row"};
-	justify-content: ${(props: any) => props.justify || "flex-start"};
-	align-items: ${(props: any) => props.align || "flex-start"};
+	justify-content: ${(props: any) => props.$justify || "flex-start"};
+	align-items: ${(props: any) => props.$align || "flex-start"};
 	gap: ${(props: any) => props.gap || "0"};
 	padding: ${(props: any) => props.padding || "0"};
 	margin: ${(props: any) => props.margin || "0"};
-	flex: ${(props: any) => props.flex || "auto"};
+	flex: ${(props: any) => props.$flex || "auto"};
 
 	${(props: any) => css`
 		background: ${props.background || "transparent"};

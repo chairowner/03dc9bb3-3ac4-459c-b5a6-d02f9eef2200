@@ -13,7 +13,6 @@ export const StyledTable = styled.div`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	overflow-y: auto;
 `;
 
 const StyledTableHead = styled(StyledTable)`

@@ -88,6 +88,7 @@ export const TableRow: FC<ITableRow> = ({
 			<StyledCeil>{product.category}</StyledCeil>
 			<StyledCeil>
 				<ToggleSwitch
+					name={"visible" + product.id}
 					checked={product.visible}
 					onChange={() => handleVisibilityToggle(product.id)}
 				/>

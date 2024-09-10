@@ -5,10 +5,12 @@ import styled from "styled-components";
 interface ToggleSwitchProps {
 	checked: boolean;
 	onChange: () => void;
+	name?: string;
 }
 
 const Switch = styled.label`
 	position: relative;
+	left: 23px;
 	display: inline-block;
 	width: 50px;
 	height: 28px;
@@ -45,10 +47,19 @@ const Slider = styled.span<{ checked: boolean }>`
 	}
 `;
 
-export const ToggleSwitch: FC<ToggleSwitchProps> = ({ checked, onChange }) => {
+export const ToggleSwitch: FC<ToggleSwitchProps> = ({
+	name,
+	checked,
+	onChange,
+}) => {
 	return (
 		<Switch>
-			<Checkbox type="checkbox" checked={checked} onChange={onChange} />
+			<Checkbox
+				name={name}
+				type="checkbox"
+				checked={checked}
+				onChange={onChange}
+			/>
 			<Slider checked={checked}></Slider>
 		</Switch>
 	);

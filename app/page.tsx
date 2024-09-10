@@ -61,7 +61,7 @@ export default function Home() {
 			<GlobalStyle />
 			<StyledPage>
 				<StyledApp>
-					<Search />
+					<Search name="search" placeholder="Поиск" />
 					<Table items={products} setItems={setProducts} />
 				</StyledApp>
 			</StyledPage>

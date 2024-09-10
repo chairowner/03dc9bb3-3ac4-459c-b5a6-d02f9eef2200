@@ -10,7 +10,7 @@ export interface ITable {
 	setItems: Dispatch<SetStateAction<TypeProduct[]>>;
 }
 
-const maxItemsOnPage: number = 12;
+const maxItemsOnPage: number = 8;
 
 export const Table: FC<ITable> = ({ items, setItems }) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -78,10 +78,10 @@ export const Table: FC<ITable> = ({ items, setItems }) => {
 			direction="column"
 			width="100%"
 			height="100%"
-			justify="space-between"
-			align="center"
+			$justify="space-between"
+			$align="center"
 		>
-			<Flex direction="column" width="100%" flex="1">
+			<Flex direction="column" width="100%" $flex="1">
 				<TableHeader {...tableHeaderProps} />
 				<TableBody {...tableBodyProps} />
 			</Flex>

@@ -30,11 +30,16 @@ const StyledSearchImg = styled.img`
 	height: 21px;
 `;
 
-export const Search: FC = ({ ...props }) => {
+export interface ISearchProps {
+	name?: string;
+	placeholder?: string;
+}
+
+export const Search: FC<ISearchProps> = ({ name, placeholder }) => {
 	return (
 		<StyledSearchContainer>
-			<StyledSearchImg src="/search.svg" alt="Поиск" />
-			<StyledSearch {...props} placeholder="Поиск" />
+			<StyledSearchImg src="/search.svg" alt={placeholder} />
+			<StyledSearch name={name} placeholder={placeholder} />
 		</StyledSearchContainer>
 	);
 };
