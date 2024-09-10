@@ -3,6 +3,7 @@ export type TypeProductCategory =
 	| "Футболка 1"
 	| "Футболка 3"
 	| "Футболка 6"
+	| "Футболка 2"
 	| "Штаны";
 
 export type TypeProduct = {

@@ -9,6 +9,7 @@ const StyledFlex = styled.div`
 	gap: ${(props: any) => props.gap || "0"};
 	padding: ${(props: any) => props.padding || "0"};
 	margin: ${(props: any) => props.margin || "0"};
+	flex: ${(props: any) => props.flex || "auto"};
 
 	${(props: any) => css`
 		background: ${props.background || "transparent"};

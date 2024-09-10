@@ -13,6 +13,7 @@ export const StyledTable = styled.div`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
+	overflow-y: auto;
 `;
 
 const StyledTableHead = styled(StyledTable)`
@@ -35,30 +36,16 @@ const StyledCeilHead = styled(StyledCeil)`
 `;
 
 export interface ITableHeader {
-	items: TypeProduct[];
 	setItems: Dispatch<SetStateAction<TypeProduct[]>>;
+	setPageItems: Dispatch<SetStateAction<TypeProduct[]>>;
+	sortedBy: (key: TypeProductKeys) => void;
 }
 
-export const TableHeader: FC<ITableHeader> = ({ items, setItems }) => {
-	const sortedBy = (key: TypeProductKeys) => {
-		if (!["title", "category", "visible"].includes(key)) {
-			return false;
-		}
-		const sortedProducts = [...items].sort((a: TypeProduct, b: TypeProduct) => {
-			if (key === "title" || key === "category") {
-				return a[key].localeCompare(b[key]);
-			} else {
-				if (a[key] > b[key]) {
-					return 1;
-				} else if (a[key] < b[key]) {
-					return -1;
-				}
-				return 0;
-			}
-		});
-		setItems(sortedProducts);
-	};
-
+export const TableHeader: FC<ITableHeader> = ({
+	setItems,
+	setPageItems,
+	sortedBy,
+}) => {
 	return (
 		<StyledTableHead>
 			<StyledRowHead>

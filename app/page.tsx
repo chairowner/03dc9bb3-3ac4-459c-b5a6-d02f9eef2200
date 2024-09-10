@@ -2,6 +2,9 @@
 import { Search } from "@/components/Search";
 import { Table } from "@/modules/Table";
 import styled, { createGlobalStyle } from "styled-components";
+import { useState } from "react";
+import { initData } from "@/helpers/initial-data";
+import { TypeProduct } from "@/types/Product";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -38,25 +41,28 @@ const StyledPage = styled.div`
 	height: 100vh;
 `;
 const StyledApp = styled.div`
+	display: flex;
+	flex-direction: column;
 	background-color: #ffffff;
 	padding: 18px 20px;
 	margin: 0 auto;
 	width: 100%;
-	max-width: 1132px;
+	max-width: 1200px;
 	height: 100%;
 	max-height: 780px;
 	border-radius: 16px;
-	overflow-y: auto;
 `;
 
 export default function Home() {
+	const [products, setProducts] = useState<TypeProduct[]>(initData);
+
 	return (
 		<>
 			<GlobalStyle />
 			<StyledPage>
 				<StyledApp>
 					<Search />
-					<Table />
+					<Table items={products} setItems={setProducts} />
 				</StyledApp>
 			</StyledPage>
 		</>
