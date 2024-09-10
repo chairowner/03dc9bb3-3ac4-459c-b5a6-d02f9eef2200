@@ -10,7 +10,7 @@ interface ToggleSwitchProps {
 
 const Switch = styled.label`
 	position: relative;
-	left: 23px;
+	left: 14px;
 	display: inline-block;
 	width: 50px;
 	height: 28px;
